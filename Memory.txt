@@ -1,0 +1,10 @@
+GETINT
+MOVE r[1],1
+MOVE r[2],1
+COMP r[2],r[0]
+JG 9
+MUL r[1],r[2]
+ADD r[2],1
+JUMP 4 
+ESCREVAL r[1]
+RET 0

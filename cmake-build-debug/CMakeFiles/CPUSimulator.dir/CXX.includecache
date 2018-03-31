@@ -1,0 +1,44 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/thiagofsr/CLionProjects/CPUSimulator/CPU.cpp
+CPU.h
+/home/thiagofsr/CLionProjects/CPUSimulator/CPU.h
+
+/home/thiagofsr/CLionProjects/CPUSimulator/CPU.h
+Memory.h
+/home/thiagofsr/CLionProjects/CPUSimulator/Memory.h
+Utils.h
+/home/thiagofsr/CLionProjects/CPUSimulator/Utils.h
+
+/home/thiagofsr/CLionProjects/CPUSimulator/Memory.cpp
+cstring
+-
+Memory.h
+/home/thiagofsr/CLionProjects/CPUSimulator/Memory.h
+
+/home/thiagofsr/CLionProjects/CPUSimulator/Memory.h
+vector
+-
+iostream
+-
+fstream
+-
+cstdlib
+-
+Utils.h
+/home/thiagofsr/CLionProjects/CPUSimulator/Utils.h
+
+/home/thiagofsr/CLionProjects/CPUSimulator/Utils.h
+
+/home/thiagofsr/CLionProjects/CPUSimulator/main.cpp
+iostream
+-
+Memory.h
+/home/thiagofsr/CLionProjects/CPUSimulator/Memory.h
+
