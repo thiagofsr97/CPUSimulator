@@ -10,6 +10,7 @@ CMakeFiles/CPUSimulator.dir/Memory.cpp.o: ../Memory.cpp
 CMakeFiles/CPUSimulator.dir/Memory.cpp.o: ../Memory.h
 CMakeFiles/CPUSimulator.dir/Memory.cpp.o: ../Utils.h
 
+CMakeFiles/CPUSimulator.dir/main.cpp.o: ../CPU.h
 CMakeFiles/CPUSimulator.dir/main.cpp.o: ../Memory.h
 CMakeFiles/CPUSimulator.dir/main.cpp.o: ../Utils.h
 CMakeFiles/CPUSimulator.dir/main.cpp.o: ../main.cpp

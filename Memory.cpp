@@ -8,8 +8,8 @@
 
 void decodeArguments(Instruction& instr,std::string firstArgument, std::string secondArgument){
     int value;
-
-
+    instr.argument1.textArg = firstArgument;
+    instr.argument2.textArg = "none";
 
     if(std::toupper(firstArgument.at(0)) == 'R') {
         instr.argument1.typeOfAccess = REGISTER;
@@ -18,6 +18,13 @@ void decodeArguments(Instruction& instr,std::string firstArgument, std::string s
     else if(std::toupper(firstArgument.at(0)) == 'M') {
         instr.argument1.typeOfAccess = MEMORY;
         value = (int)std::strtol(firstArgument.substr(2,firstArgument.size()).c_str(), nullptr,10);
+
+    }else if(firstArgument.at(0) == '\''){
+        instr.argument1.typeOfAccess = DIRECT;
+        int pos = firstArgument.find_last_of('\'');
+
+        instr.argument1.textArg = firstArgument.substr(1,pos-1);
+
     }else if(firstArgument == "EAX"){
         instr.argument1.typeOfAccess = REGISTER;
         value = EAX;
@@ -59,6 +66,12 @@ void decodeArguments(Instruction& instr,std::string firstArgument, std::string s
         else if (std::toupper(secondArgument.at(0)) == 'M') {
             instr.argument2.typeOfAccess = MEMORY;
             value = (int)std::strtol(secondArgument.substr(2,secondArgument.size()).c_str(), nullptr,10);
+        }else if(firstArgument.at(0) == '\''){
+            instr.argument2.typeOfAccess = DIRECT;
+            int pos = secondArgument.find_last_of('\'');
+
+            instr.argument1.textArg = secondArgument.substr(1,pos-1);
+
         }else if(firstArgument == "EAX"){
             instr.argument1.typeOfAccess = REGISTER;
             value = EAX;
@@ -86,6 +99,7 @@ void decodeArguments(Instruction& instr,std::string firstArgument, std::string s
         }
         else{
             instr.argument2.typeOfAccess = DIRECT;
+
             value = (int)std::strtol(secondArgument.c_str(), nullptr,10);
         }
         instr.argument2.index = value;
@@ -136,7 +150,6 @@ void Memory::LoadInstructions() {
         if(!line.empty())
             instructions.push_back(line);
     }
-
 
 }
 

@@ -20,10 +20,11 @@ private:
     Instruction instr;
     Operation op;
     int programCounter;
+    int returnCode;
 
     int cycles;
+    void compareAndSetFlag(int,int);
     void fetch();
-
     bool decode();
     void execute();
 public:
@@ -31,7 +32,7 @@ public:
 
     CPU(std::string, std::string);
     ~CPU();
-    void init();
+    int init();
 
 };
 

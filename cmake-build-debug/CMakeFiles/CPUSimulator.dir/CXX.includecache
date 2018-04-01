@@ -41,4 +41,6 @@ iostream
 -
 Memory.h
 /home/thiagofsr/CLionProjects/CPUSimulator/Memory.h
+CPU.h
+/home/thiagofsr/CLionProjects/CPUSimulator/CPU.h
 

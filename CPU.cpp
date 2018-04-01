@@ -4,9 +4,12 @@
 
 #include "CPU.h"
 
+
+
 CPU::CPU(std::string instructionsPath, std::string dataPath) {
     programCounter = 0;
     cycles = 0;
+    returnCode = 0;
     memory = new Memory(instructionsPath,dataPath);
 
 }
@@ -19,11 +22,13 @@ CPU::~CPU() {
 void CPU::fetch() {
     memory->readInstruction(programCounter,instr);
     programCounter++;
+
     cycles++;
 
 }
 
 bool CPU::decode() {
+
     if(instr.operation == "ADD")
         op = ADD;
     else if(instr.operation == "SUB")
@@ -36,12 +41,14 @@ bool CPU::decode() {
         op = LOAD;
     else if(instr.operation == "STORE")
         op = STORE;
+    else if(instr.operation == "MOV")
+        op = MOV;
     else if(instr.operation == "COPY")
         op = COPY;
-    else if(instr.operation == "COMP")
-        op = COMP;
-    else if(instr.operation == "JUMP")
-        op = JUMP;
+    else if(instr.operation == "CMP")
+        op = CMP;
+    else if(instr.operation == "JMP")
+        op = JMP;
     else if(instr.operation == "JZ")
         op = JZ;
     else if(instr.operation == "JL")
@@ -58,14 +65,17 @@ bool CPU::decode() {
         op = JD;
     else if(instr.operation == "PRINT")
         op = PRINT;
-    else if(instr.operation == "RET") {
+    else if(instr.operation == "RET")
         op = RET;
-    }
     else if(instr.operation == "READINT")
         op = READINT;
-    else
+    else{
+
         ErrorOpDecode(instr.operation);
+    }
+
     cycles++;
+
     return op == RET? true:false;
 
 }
@@ -99,6 +109,7 @@ void CPU::execute() {
                 b = instr.argument2.index;
                 a += b;
                 registers[instr.argument1.index] = a;
+
 
             }else if(instr.argument1.typeOfAccess == MEMORY && instr.argument2.typeOfAccess == DIRECT){
                 a = memory->readData(instr.argument1.index);
@@ -141,9 +152,10 @@ void CPU::execute() {
                 memory->writeData(instr.argument1.index,a);
 
             }else
-            ErrorOpExecution("SUB");
+                ErrorOpExecution("SUB");
             break;
         case MUL:
+
             if(instr.argument1.typeOfAccess == REGISTER && instr.argument2.typeOfAccess == REGISTER){
                 a = registers[instr.argument1.index];
                 b = registers[instr.argument2.index];
@@ -196,57 +208,162 @@ void CPU::execute() {
                 ErrorOpExecution("DIV");
 
             break;
-        case LOAD:
+        case MOV:
+            if(instr.argument1.typeOfAccess == REGISTER && instr.argument2.typeOfAccess == REGISTER){
+                registers[instr.argument1.index] = registers[instr.argument2.index];
+            }else if(instr.argument1.typeOfAccess == REGISTER && instr.argument2.typeOfAccess == MEMORY){
+                b = memory->readData(instr.argument2.index);
+                registers[instr.argument1.index] = b;
+            }else if(instr.argument1.typeOfAccess == MEMORY && instr.argument2.typeOfAccess == REGISTER){
+                memory->writeData(instr.argument1.index,registers[instr.argument2.index]);
+            }else if(instr.argument1.typeOfAccess == MEMORY && instr.argument2.typeOfAccess == DIRECT){
+                b = instr.argument2.index;
+                memory->writeData(instr.argument1.index,b);
+            }else if(instr.argument1.typeOfAccess == REGISTER && instr.argument2.typeOfAccess == DIRECT){
+                b = instr.argument2.index;
+                registers[instr.argument1.index] = b;
+
+            }else {
+                ErrorOpExecution("MOV");
+            }
             break;
-        case STORE:
+
+        case CMP:
+            if(instr.argument1.typeOfAccess == REGISTER && instr.argument2.typeOfAccess == REGISTER){
+                a = registers[instr.argument1.index];
+                b = registers[instr.argument2.index];
+                compareAndSetFlag(a,b);
+
+            }else if(instr.argument1.typeOfAccess == REGISTER && instr.argument2.typeOfAccess == MEMORY){
+                a = registers[instr.argument1.index];
+                b = memory->readData(instr.argument2.index);
+                compareAndSetFlag(a,b);
+            }else if(instr.argument1.typeOfAccess == MEMORY && instr.argument2.typeOfAccess == REGISTER){
+                a = memory->readData(instr.argument1.index);
+                b = registers[instr.argument2.index];
+                compareAndSetFlag(a,b);
+
+            }else if(instr.argument1.typeOfAccess == REGISTER && instr.argument2.typeOfAccess == DIRECT){
+                a = registers[instr.argument1.index];
+                b = instr.argument2.index;
+                compareAndSetFlag(a,b);
+            }else
+                ErrorOpExecution("CMP");
             break;
-        case COPY:
-            break;
-        case COMP:
-            break;
-        case JUMP:
+        case JMP:
+            if(instr.argument1.typeOfAccess == DIRECT && instr.argument2.typeOfAccess == NONE){
+                a = instr.argument1.index;
+                programCounter = a;
+            }else
+                ErrorOpExecution("JMP");
             break;
         case JZ:
+            if(instr.argument1.typeOfAccess == DIRECT && instr.argument2.typeOfAccess == NONE){
+                a = instr.argument1.index;
+                if(flags[JZ])
+                    programCounter = a;
+            }
+            else
+              ErrorOpExecution("JZ");
             break;
         case JL:
+            if(instr.argument1.typeOfAccess == DIRECT && instr.argument2.typeOfAccess == NONE){
+                a = instr.argument1.index;
+                if(flags[JL])
+                    programCounter = a;
+            }else
+                ErrorOpExecution("JMP");
             break;
         case JG:
+            if(instr.argument1.typeOfAccess == DIRECT && instr.argument2.typeOfAccess == NONE){
+                a = instr.argument1.index;
+                if(flags[JG])
+                    programCounter = a;
+            }else
+                ErrorOpExecution("JMP");
             break;
         case JE:
+            if(instr.argument1.typeOfAccess == DIRECT && instr.argument2.typeOfAccess == NONE){
+                a = instr.argument1.index;
+                if(flags[JE])
+                    programCounter = a;
+            }else
+                ErrorOpExecution("JMP");
             break;
         case JGE:
+            if(instr.argument1.typeOfAccess == DIRECT && instr.argument2.typeOfAccess == NONE){
+                a = instr.argument1.index;
+                if(flags[JGE])
+                    programCounter = a;
+            }else
+                ErrorOpExecution("JMP");
             break;
         case JLE:
+            if(instr.argument1.typeOfAccess == DIRECT && instr.argument2.typeOfAccess == NONE){
+                a = instr.argument1.index;
+                if(flags[JLE])
+                    programCounter = a;
+            }else
+                ErrorOpExecution("JMP");
             break;
         case JD:
+            if(instr.argument1.typeOfAccess == DIRECT && instr.argument2.typeOfAccess == NONE){
+                a = instr.argument1.index;
+                if(flags[JD])
+                    programCounter = a;
+            }else
+                ErrorOpExecution("JMP");
             break;
         case PRINT:
+            if(instr.argument1.typeOfAccess == DIRECT && instr.argument2.typeOfAccess == NONE){
+                std::cout << instr.argument1.textArg << std::endl;
+            }else
+                ErrorOpExecution("PRINT");
             break;
         case RET:
+            if(instr.argument1.typeOfAccess == DIRECT && instr.argument2.typeOfAccess == NONE){
+                a = instr.argument1.index;
+                returnCode = a;
+            }
+
             break;
     }
-
-
-
-
-
-
+    cycles++;
 
 
 
 }
 
-void CPU::init() {
+int CPU::init() {
     bool ret = false;
     memory->LoadInstructions();
     memory->LoadData();
 
-    while(programCounter <= memory->numberOfInstrunctions() && ret == false){
+    std::cout << "N of instructions: " << memory->numberOfInstrunctions() << "\n";
+
+    while((programCounter <= memory->numberOfInstrunctions()) && !ret){
+
         fetch();
         ret = decode();
         execute();
 
     }
+    return returnCode;
+}
+
+void CPU::compareAndSetFlag(int a, int b) {
+    for(int i = 0;i<7;i++){
+        flags[i] = false;
+    }
+    if(a == 0) flags[ZERO] = true;
+    if(a > b) flags[GREATER] = true;
+    if(a >= b) flags[GREATEQUAL] = true;
+    if(a < b) flags[LESSER] = true;
+    if(a <= b) flags[LESSEQUAL] = true;
+    if(a == b) flags[EQUAL] = true;
+    if(a != b) flags[DIFFERNT] = true;
+
+
 }
 
 

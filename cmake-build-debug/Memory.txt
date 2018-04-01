@@ -1,7 +1,9 @@
 MOV r[1],1
 MOV r[2],1
 CMP r[2],r[0]
+JMP 1
 MUL r[1],r[2]
-ADD r[2],1
-PRINT OI
-RET 0
+PRINT 'OI'
+ADD r[2],m[1]
+RET 10
+

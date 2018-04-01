@@ -16,6 +16,7 @@
 
 typedef struct argument{
     int index;
+    std::string textArg;
     access typeOfAccess;
 };
 

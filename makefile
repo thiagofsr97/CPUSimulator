@@ -1,7 +1,7 @@
 CC=g++
 CFLAGS=-I -std=c++11.
-DEPS = Memory.h 
-OBJ = Memory.o main.o 
+DEPS = Memory.h CPU.h Utils.h
+OBJ = Memory.o CPU.o main.o 
 
 %.o: %.c $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)
