@@ -10,20 +10,20 @@
 #include <iostream>
 #include <fstream>
 #include <cstdlib>
+#include <cstring>
 #include "Utils.h"
 
 
 
 typedef struct argument{
-    int index;
+    int value;
     std::string textArg;
     access typeOfAccess;
 };
 
 typedef struct Instruction{
     std::string operation;
-    argument argument1;
-    argument argument2;
+    argument args[3];
 };
 
 class Memory {

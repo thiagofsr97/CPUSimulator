@@ -1,6 +1,6 @@
 CC=g++
 CFLAGS=-I -std=c++11.
-DEPS = Memory.h CPU.h Utils.h
+DEPS = Utils.h Memory.h CPU.h 
 OBJ = Memory.o CPU.o main.o 
 
 %.o: %.c $(DEPS)

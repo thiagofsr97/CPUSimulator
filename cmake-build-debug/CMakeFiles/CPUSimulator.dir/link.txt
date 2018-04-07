@@ -1,1 +1,0 @@
-/usr/bin/c++  -g   CMakeFiles/CPUSimulator.dir/main.cpp.o CMakeFiles/CPUSimulator.dir/Memory.cpp.o CMakeFiles/CPUSimulator.dir/CPU.cpp.o  -o CPUSimulator 

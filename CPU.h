@@ -25,14 +25,19 @@ private:
     int cycles;
     void compareAndSetFlag(int,int);
     void fetch();
-    bool decode();
-    void execute();
+
+    void decode();
+    bool execute();
+    void deactivate();
 public:
+    int getCycles();
+    int getReturnCode();
 
 
     CPU(std::string, std::string);
     ~CPU();
     int init();
+
 
 };
 
