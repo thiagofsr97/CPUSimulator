@@ -92,8 +92,10 @@ void Memory::LoadInstructions() {
     int i = 0;
     while(!instructionFile.eof()){
         getline(instructionFile,line);
-        if(!line.empty())
-            instructions.push_back(line);
+        if(!line.empty()) {
+            if(line.at(0) != '#')
+                instructions.push_back(line);
+        }
     }
 
 }

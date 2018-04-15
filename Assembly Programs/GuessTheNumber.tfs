@@ -1,0 +1,28 @@
+PRINT 'Guess the number !!!\n'
+#loads a random number from memory 
+MOV r[6],m[5]
+
+#initializing a counter to number of attemps
+MOV r[7],0
+
+#reading input from user
+PRINT 'Type your guess:\n'
+READINT EAX
+
+#increments number of attemps
+ADD r[7],1
+
+#compare input with the number to be guessed
+CMP EAX,r[6]
+JG 10
+JL 12
+JE 14
+PRINT 'Less!\n'
+JMP 3
+PRINT 'More!\n'
+JMP 3
+PRINT 'You nailed it dude!\n'
+PRINT 'Number of Attemps:\n'
+PRINTV r[7]
+PRINT '\n'
+RET 1

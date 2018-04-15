@@ -36,7 +36,7 @@ int CPU::fetchOperands(Instruction instr,int argIndex) {
         case REGISTER:
             return registers[instr.args[argIndex].value];
         default:
-            ErrorOpExecution(activeOperation);
+        ErrorOpExecution(activeOperation);
     }
 }
 
@@ -47,9 +47,8 @@ void CPU::writeData(Instruction instr,int argIndex, int value) {
             if(argIndex == 0 && instr.args[1].typeOfAccess == MEMORY){
                 ErrorOpExecution(activeOperation);
             }
-
-            cycles++;
             memory->writeData(instr.args[argIndex].value,value);
+            cycles++;
             break;
         case REGISTER:
             registers[instr.args[argIndex].value] = value;
@@ -59,7 +58,19 @@ void CPU::writeData(Instruction instr,int argIndex, int value) {
     }
 }
 
+void CPU::compare(int flag) {
+    int a;
+    if(instr.args[0].typeOfAccess == DIRECT && instr.args[1].typeOfAccess == NONE && instr.args[2].typeOfAccess == NONE){
+        a = fetchOperands(instr,0);
+        if(flags[flag])
+            programCounter = a;
+    }else {
+        ErrorOpExecution(activeOperation);
+    }
+}
+
 void CPU::decode() {
+
 
     if(instr.operation == "ADD")
         op = ADD;
@@ -99,6 +110,8 @@ void CPU::decode() {
         op = READINT;
     else if(instr.operation == "PRINTV")
         op = PRINTV;
+    else if(instr.operation == "CLS")
+        op = CLS;
     else{
 
         ErrorOpDecode(instr.operation);
@@ -134,7 +147,7 @@ bool CPU::execute() {
             activeOperation = "SUB";
             if(instr.args[2].typeOfAccess == NONE){
                 a = fetchOperands(instr,0);
-                b = fetchOperands(instr,b);
+                b = fetchOperands(instr,1);
                 a-=b;
 
             }
@@ -181,8 +194,6 @@ bool CPU::execute() {
                 a = fetchOperands(instr,1);
                 writeData(instr,0,a);
             } else {
-
-
                 ErrorOpExecution(activeOperation);
             }
             break;
@@ -224,7 +235,7 @@ bool CPU::execute() {
             activeOperation = "PRINTV";
             if(instr.args[1].typeOfAccess == NONE && instr.args[2].typeOfAccess == NONE){
                 a = fetchOperands(instr,0);
-                std::cout << a << std::endl;
+                std::cout << a;
             }
             else {
                 ErrorOpExecution(activeOperation);
@@ -251,33 +262,50 @@ bool CPU::execute() {
         case JZ:
             activeOperation = "JZ";
             flag = ZERO;
+            compare(flag);
+            break;
         case JL:
             activeOperation = "JL";
             flag = LESSER;
+            compare(flag);
+            break;
         case JG:
             activeOperation = "JG";
             flag = GREATER;
+            compare(flag);
+            break;
         case JE:
             activeOperation = "JE";
             flag = EQUAL;
+            compare(flag);
+            break;
         case JGE:
             activeOperation = "JGE";
             flag = GREATEQUAL;
+            compare(flag);
+            break;
         case JLE:
             activeOperation = "JLE";
-           flag = LESSEQUAL;
+            flag = LESSEQUAL;
+            compare(flag);
+            break;
         case JD:
             activeOperation = "JD";
-           flag = DIFFERNT;
-        default:
-            if(instr.args[0].typeOfAccess == DIRECT && instr.args[1].typeOfAccess == NONE && instr.args[2].typeOfAccess == NONE){
-                a = fetchOperands(instr,0);
-                if(flags[flag])
-                    programCounter = a;
-            }else {
+            flag = DIFFERNT;
+            compare(flag);
+            break;
+        case CLS:
+            activeOperation = "CLS";
+            if(instr.args[0].typeOfAccess == NONE && instr.args[1].typeOfAccess == NONE && instr.args[2].typeOfAccess == NONE) {
+                int n;
+                for (n = 0; n < 10; n++)
+                    printf("\n\n\n\n\n\n\n\n\n\n");
+
+            }else{
                 ErrorOpExecution(activeOperation);
             }
             break;
+
 
     }
     cycles++;

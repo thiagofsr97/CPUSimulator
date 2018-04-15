@@ -1,0 +1,42 @@
+PRINT 'This program calculates the factorial of a number!!\n'
+
+#Getting input from user and checking if it's a correct input
+
+PRINT 'Type your input: \n'
+READINT EAX
+CMP EAX,0
+JLE 6
+JG 8
+PRINT 'Come on! Only numbers greater than zero dude! Try again.\n'
+JMP 1
+
+#Calculating factorial according to the input
+MOV r[9],1
+MOV r[8],EAX
+CMP EAX, 1
+JG 13
+JE 16
+
+MUL r[9],EAX
+SUB EAX,1
+JMP 10
+
+#Moving factorial result to memory
+MOV m[0],r[9]
+
+#Printing factorial result to console
+PRINT 'The factorial of '
+PRINTV r[8]
+PRINT ' is: '
+PRINTV m[0]
+PRINT '\n'
+
+#Asking to the user if wants to run another calculation
+PRINT 'DO you wish to run another calculation ? (1 - YES/ 0 - NO)\n'
+PRINT '\n'
+PRINT '\n'
+READINT EAX
+CMP EAX,1
+JE 1
+PRINT 'Thank you and Good Bye!!\n'
+RET 0

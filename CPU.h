@@ -28,6 +28,7 @@ private:
     void fetch();
     int fetchOperands(Instruction,int);
     void writeData(Instruction,int, int );
+    void compare(int);
 
     void decode();
     bool execute();

@@ -12,18 +12,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2c1457dd-76f4-4963-81c2-4fe6038ae41c" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CPU.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/CPU.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CPU.h" beforeDir="false" afterPath="$PROJECT_DIR$/CPU.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CPU.o" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/CPUSimulator" beforeDir="false" afterPath="$PROJECT_DIR$/CPUSimulator" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Memory.h" beforeDir="false" afterPath="$PROJECT_DIR$/Memory.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Memory.o" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Memory.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Memory.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.o" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/makefile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Memory.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Memory.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Memory.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Utils.h" beforeDir="false" afterPath="$PROJECT_DIR$/Utils.h" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -39,8 +34,8 @@
       <file leaf-file-name="CPU.cpp" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/CPU.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1436">
-              <caret line="197" selection-start-line="197" selection-end-line="197" />
+            <state relative-caret-position="4470">
+              <caret line="298" column="93" selection-start-line="298" selection-start-column="93" selection-end-line="298" selection-end-column="93" />
             </state>
           </provider>
         </entry>
@@ -48,8 +43,8 @@
       <file leaf-file-name="CPU.h" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/CPU.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="405">
-              <caret line="28" column="37" selection-start-line="28" selection-start-column="37" selection-end-line="28" selection-end-column="37" />
+            <state relative-caret-position="300">
+              <caret line="30" column="22" selection-start-line="30" selection-start-column="22" selection-end-line="30" selection-end-column="22" />
             </state>
           </provider>
         </entry>
@@ -63,20 +58,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Memory.txt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Memory.txt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="120">
-              <caret line="8" column="12" selection-start-line="8" selection-start-column="12" selection-end-line="8" selection-end-column="12" />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="Memory.cpp" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Memory.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1437">
-              <caret line="10" selection-start-line="10" selection-end-line="10" />
+            <state relative-caret-position="221">
+              <caret line="167" selection-start-line="167" selection-end-line="167" />
             </state>
           </provider>
         </entry>
@@ -85,12 +71,17 @@
         <entry file="file://$PROJECT_DIR$/Utils.h">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="210">
-              <caret line="14" selection-start-line="14" selection-end-line="14" selection-end-column="7" />
+              <caret line="14" column="109" selection-start-line="14" selection-start-column="109" selection-end-line="14" selection-end-column="109" />
             </state>
           </provider>
         </entry>
       </file>
     </leaf>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>oi</find>
+    </findStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -98,10 +89,12 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/CPU.h" />
-        <option value="$PROJECT_DIR$/Utils.h" />
         <option value="$PROJECT_DIR$/Memory.h" />
         <option value="$PROJECT_DIR$/Memory.txt" />
+        <option value="$PROJECT_DIR$/CPU.h" />
+        <option value="$PROJECT_DIR$/Memory.cpp" />
+        <option value="$PROJECT_DIR$/Factorial.tfs" />
+        <option value="$PROJECT_DIR$/Utils.h" />
         <option value="$PROJECT_DIR$/CPU.cpp" />
       </list>
     </option>
@@ -175,23 +168,23 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1523815242336</updated>
-      <workItem from="1523815244185" duration="6278000" />
+      <workItem from="1523815244185" duration="12987000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="6278000" />
+    <option name="totallyTimeSpent" value="12987000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="65" y="-4" width="1301" height="772" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24980783" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24980783" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Messages" weight="0.3298193" />
       <window_info anchor="bottom" id="CMake" />
       <window_info anchor="bottom" id="Event Log" side_tool="true" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.3298193" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.3298193" />
       <window_info anchor="bottom" id="Version Control" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Terminal" />
@@ -214,28 +207,28 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="1" />
+      <breakpoints>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/CPU.cpp</url>
+          <line>38</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+      <option name="time" value="2" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Utils.h">
+    <entry file="file://$PROJECT_DIR$/Memory.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="14" selection-start-line="14" selection-end-line="14" selection-end-column="7" />
+        <state relative-caret-position="15">
+          <caret line="16" selection-start-line="16" selection-end-line="16" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/CPU.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="28" column="37" selection-start-line="28" selection-start-column="37" selection-end-line="28" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Memory.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="16" selection-start-line="16" selection-end-line="16" />
+        <state relative-caret-position="300">
+          <caret line="30" column="22" selection-start-line="30" selection-start-column="22" selection-end-line="30" selection-end-column="22" />
         </state>
       </provider>
     </entry>
@@ -248,15 +241,29 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Memory.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1437">
-          <caret line="10" selection-start-line="10" selection-end-line="10" />
+        <state relative-caret-position="221">
+          <caret line="167" selection-start-line="167" selection-end-line="167" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Factorial.tfs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="495">
+          <caret line="33" column="55" selection-start-line="33" selection-start-column="55" selection-end-line="33" selection-end-column="55" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Utils.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="14" column="109" selection-start-line="14" selection-start-column="109" selection-end-line="14" selection-end-column="109" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/CPU.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1436">
-          <caret line="197" selection-start-line="197" selection-end-line="197" />
+        <state relative-caret-position="4470">
+          <caret line="298" column="93" selection-start-line="298" selection-start-column="93" selection-end-line="298" selection-end-column="93" />
         </state>
       </provider>
     </entry>

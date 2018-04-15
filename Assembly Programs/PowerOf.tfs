@@ -1,0 +1,59 @@
+PRINT 'This program calculates the power of a number!!\n'
+
+##Getting input from user
+
+PRINT 'Type the base: \n'
+READINT EAX
+
+#Copying EAX value
+
+MOV r[5],EAX
+
+PRINT 'Type the power: \n'
+READINT r[1]
+
+#initializing a counter with 1
+MOV r[11],1
+CMP r[1],0
+JE 11
+JG 13
+JL 26
+
+
+
+#If the power is 0, then the result is always 1
+MOV EAX,1
+JMP 19
+
+#If the power is greater than 0, then calculation must be done
+CMP r[1],r[11]
+JG 16
+JE 19
+
+MUL r[5],EAX
+ADD r[11],1
+JMP 13
+
+#Printing result to console
+PRINTV EAX
+PRINT ' to the power of '
+PRINTV r[1]
+PRINT ' is: '
+PRINTV r[5]
+PRINT '\n'
+JMP 29
+
+#If the base is negative, then ask the user to try again
+PRINT 'Please. Only positive powers. Try again!\n'
+PRINT '\n'
+JMP 4
+
+#Asking to the user if wants to run another calculation
+PRINT 'Do you wish to run another calculation ? (1 - YES/ 0 - NO)\n'
+READINT EAX
+CLS
+CMP EAX,1
+JE 1
+PRINT 'Thank you and Good Bye!!\n'
+RET 1
+
