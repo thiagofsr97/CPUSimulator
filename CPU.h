@@ -19,12 +19,15 @@ private:
 
     Instruction instr;
     Operation op;
+    std::string activeOperation;
     int programCounter;
     int returnCode;
 
     int cycles;
     void compareAndSetFlag(int,int);
     void fetch();
+    int fetchOperands(Instruction,int);
+    void writeData(Instruction,int, int );
 
     void decode();
     bool execute();

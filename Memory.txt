@@ -1,13 +1,12 @@
-MOVE EAX,m[0]
+MOV EAX,m[0]
 DIV m[1]
 MOV m[2],EAX
 MOV m[3],EDX
 ADD m[2],0
 MOV r[1],1
 MOV r[2],1
-CMP r[2]
-MUL r[1],r[2]
-MUL r[1],r[2],2
+CMP r[2],r[1]
+READINT r[1]
 PRINTV r[1]
 RET 10
 

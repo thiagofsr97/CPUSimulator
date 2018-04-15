@@ -14,14 +14,13 @@
 #include "Utils.h"
 
 
-
-typedef struct argument{
+struct argument{
     int value;
     std::string textArg;
     access typeOfAccess;
 };
 
-typedef struct Instruction{
+struct Instruction{
     std::string operation;
     argument args[3];
 };

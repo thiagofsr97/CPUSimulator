@@ -22,9 +22,41 @@ CPU::~CPU() {
 void CPU::fetch() {
     memory->readInstruction(programCounter,instr);
     programCounter++;
-
     cycles++;
 
+}
+
+int CPU::fetchOperands(Instruction instr,int argIndex) {
+    switch(instr.args[argIndex].typeOfAccess){
+        case MEMORY:
+            cycles++;
+            return memory->readData(instr.args[argIndex].value);
+        case DIRECT:
+            return instr.args[argIndex].value;
+        case REGISTER:
+            return registers[instr.args[argIndex].value];
+        default:
+            ErrorOpExecution(activeOperation);
+    }
+}
+
+void CPU::writeData(Instruction instr,int argIndex, int value) {
+
+    switch(instr.args[argIndex].typeOfAccess){
+        case MEMORY:
+            if(argIndex == 0 && instr.args[1].typeOfAccess == MEMORY){
+                ErrorOpExecution(activeOperation);
+            }
+
+            cycles++;
+            memory->writeData(instr.args[argIndex].value,value);
+            break;
+        case REGISTER:
+            registers[instr.args[argIndex].value] = value;
+            break;
+        default:
+        ErrorOpExecution(activeOperation);
+    }
 }
 
 void CPU::decode() {
@@ -37,10 +69,6 @@ void CPU::decode() {
         op = MUL;
     else if(instr.operation =="DIV")
         op = DIV;
-    else if(instr.operation =="LOAD")
-        op = LOAD;
-    else if(instr.operation == "STORE")
-        op = STORE;
     else if(instr.operation == "MOV")
         op = MOV;
     else if(instr.operation == "COPY")
@@ -85,271 +113,170 @@ bool CPU::execute() {
 
     int a,b,c;
     bool toReturn = false;
+    compFlags flag;
     switch(op){
-
         case ADD:
-            if(instr.args[0].typeOfAccess == REGISTER && instr.args[1].typeOfAccess == REGISTER && instr.args[2].typeOfAccess == NONE){
-                a = registers[instr.args[0].value];
-                b = registers[instr.args[1].value];
-                a += b;
-                registers[instr.args[0].value] = a;
-
-            }else if(instr.args[0].typeOfAccess == MEMORY && instr.args[1].typeOfAccess == REGISTER && instr.args[2].typeOfAccess == NONE){
-                a = memory->readData(instr.args[0].value);
-                b = registers[instr.args[1].value];
-                a += b;
-                memory->writeData(instr.args[0].value,a);
-
-            }else if(instr.args[0].typeOfAccess == REGISTER && instr.args[1].typeOfAccess == MEMORY && instr.args[2].typeOfAccess == NONE){
-                a = registers[instr.args[0].value];
-                b = memory->readData(instr.args[1].value);
-                a += b;
-                registers[instr.args[0].value] = a;
-
-            }else if(instr.args[0].typeOfAccess == REGISTER && instr.args[1].typeOfAccess == DIRECT && instr.args[2].typeOfAccess == NONE){
-                a = registers[instr.args[0].value];
-                b = instr.args[1].value;
-                a += b;
-                registers[instr.args[0].value] = a;
-
-
-            }else if(instr.args[0].typeOfAccess == MEMORY && instr.args[1].typeOfAccess == DIRECT && instr.args[2].typeOfAccess == NONE){
-                a = memory->readData(instr.args[0].value);
-                b = instr.args[1].value;
-                a += b;
-                memory->writeData(instr.args[0].value,a);
-
-            }else
-                ErrorOpExecution("ADD");
-            break;
-        case SUB:
-            if(instr.args[0].typeOfAccess == REGISTER && instr.args[1].typeOfAccess == REGISTER && instr.args[2].typeOfAccess == NONE){
-                a = registers[instr.args[0].value];
-                b = registers[instr.args[1].value];
-                a -= b;
-                registers[instr.args[0].value] = a;
-
-            }else if(instr.args[0].typeOfAccess == MEMORY && instr.args[1].typeOfAccess == REGISTER && instr.args[2].typeOfAccess == NONE){
-                a = memory->readData(instr.args[0].value);
-                b = registers[instr.args[1].value];
-                a -= b;
-                memory->writeData(instr.args[0].value,a);
-
-            }else if(instr.args[0].typeOfAccess == REGISTER && instr.args[1].typeOfAccess == MEMORY && instr.args[2].typeOfAccess == NONE){
-                a = registers[instr.args[0].value];
-                b = memory->readData(instr.args[1].value);
-                a -= b;
-                registers[instr.args[0].value] = a;
-
-            }else if(instr.args[0].typeOfAccess == REGISTER && instr.args[1].typeOfAccess == DIRECT && instr.args[2].typeOfAccess == NONE){
-                a = registers[instr.args[0].value];
-                b = instr.args[1].value;
-                a -= b;
-                registers[instr.args[0].value] = a;
-
-            }else if(instr.args[0].typeOfAccess == MEMORY && instr.args[1].typeOfAccess == DIRECT && instr.args[2].typeOfAccess == NONE){
-                a = memory->readData(instr.args[0].value);
-                b = instr.args[1].value;
-                a -= b;
-                memory->writeData(instr.args[0].value,a);
-
-            }else
-                ErrorOpExecution("SUB");
-            break;
-        case MUL:
-
-            if(instr.args[0].typeOfAccess == REGISTER && instr.args[1].typeOfAccess == REGISTER && instr.args[2].typeOfAccess == NONE){
-                a = registers[instr.args[0].value];
-                b = registers[instr.args[1].value];
-                a *= b;
-                registers[instr.args[0].value] = a;
-
-            }else if(instr.args[0].typeOfAccess == MEMORY && instr.args[1].typeOfAccess == REGISTER && instr.args[2].typeOfAccess == NONE){
-                a = memory->readData(instr.args[0].value);
-                b = registers[instr.args[1].value];
-                a *= b;
-                memory->writeData(instr.args[0].value,a);
-
-            }else if(instr.args[0].typeOfAccess == REGISTER && instr.args[1].typeOfAccess == MEMORY && instr.args[2].typeOfAccess == NONE){
-                a = registers[instr.args[0].value];
-                b = memory->readData(instr.args[1].value);
-                a *= b;
-                registers[instr.args[0].value] = a;
-
-            }else if(instr.args[0].typeOfAccess == REGISTER && instr.args[1].typeOfAccess == DIRECT && instr.args[2].typeOfAccess == NONE){
-                a = registers[instr.args[0].value];
-                b = instr.args[1].value;
-                a *= b;
-                registers[instr.args[0].value] = a;
-
-            }else if(instr.args[0].typeOfAccess == REGISTER && instr.args[1].typeOfAccess == REGISTER && instr.args[2].typeOfAccess == DIRECT){
-                b = registers[instr.args[1].value];
-                c = registers[instr.args[2].value];
-                a = b * c;
-                registers[instr.args[0].value] = a;
-
-            }else if(instr.args[0].typeOfAccess == REGISTER && instr.args[1].typeOfAccess == MEMORY && instr.args[2].typeOfAccess == DIRECT){
-                b = memory->readData(instr.args[1].value);
-                c = registers[instr.args[2].value];
-                a = b * c;
-                registers[instr.args[0].value] = a;
+            activeOperation = "ADD";
+            if(instr.args[2].typeOfAccess == NONE) {
+                a = fetchOperands(instr,0);
+                b = fetchOperands(instr,1);
+                a+=b;
 
             }
-            else
-                ErrorOpExecution("MUL");
+            else {
+                ErrorOpExecution(activeOperation);
+            }
+
+            writeData(instr,0,a);
 
             break;
+        case SUB:
+            activeOperation = "SUB";
+            if(instr.args[2].typeOfAccess == NONE){
+                a = fetchOperands(instr,0);
+                b = fetchOperands(instr,b);
+                a-=b;
+
+            }
+            else{
+                ErrorOpExecution(activeOperation);
+            }
+
+            writeData(instr,0,a);
+            break;
+        case MUL:
+            activeOperation = "MUL";
+            if(instr.args[2].typeOfAccess == NONE){
+                a = fetchOperands(instr,0);
+                b = fetchOperands(instr,1);
+                a*=b;
+            }else if(instr.args[2].typeOfAccess == DIRECT ){
+                b = fetchOperands(instr,1);
+                c = fetchOperands(instr,2);
+                a = b * c;
+
+            }
+            else{
+                ErrorOpExecution(activeOperation);
+            }
+            writeData(instr,0,a);
+            break;
         case DIV:
-            if(instr.args[0].typeOfAccess == REGISTER && instr.args[1].typeOfAccess == NONE && instr.args[2].typeOfAccess == NONE){
-                a = registers[instr.args[0].value];
+            activeOperation = "DIV";
+            if(instr.args[1].typeOfAccess == NONE && instr.args[2].typeOfAccess == NONE){
+                a = fetchOperands(instr,0);
                 c = registers[EAX] % a;
-                registers[EAX] /= a; //quotient
-                registers[EDX] = c; //remainder
-            }else if(instr.args[0].typeOfAccess == MEMORY && instr.args[1].typeOfAccess == NONE && instr.args[2].typeOfAccess == NONE){
-                a = memory->readData(instr.args[0].value);
-                c = registers[EAX] % a;
-                registers[EAX] /= a; //quotient
-                registers[EDX] = c; //remainder
-            }else
-                ErrorOpExecution("DIV");
+                registers[EAX] /= a; ///quotient
+                registers[EDX] = c; ///remainder
+            }
+            else {
+                ErrorOpExecution(activeOperation);
+            }
 
             break;
         case MOV:
-            if(instr.args[0].typeOfAccess == REGISTER && instr.args[1].typeOfAccess == REGISTER && instr.args[2].typeOfAccess == NONE){
-                registers[instr.args[0].value] = registers[instr.args[1].value];
-            }else if(instr.args[0].typeOfAccess == REGISTER && instr.args[1].typeOfAccess == MEMORY && instr.args[2].typeOfAccess == NONE){
-                b = memory->readData(instr.args[1].value);
-                registers[instr.args[0].value] = b;
-            }else if(instr.args[0].typeOfAccess == MEMORY && instr.args[1].typeOfAccess == REGISTER && instr.args[2].typeOfAccess == NONE){
-                memory->writeData(instr.args[0].value,registers[instr.args[1].value]);
-            }else if(instr.args[0].typeOfAccess == MEMORY && instr.args[1].typeOfAccess == DIRECT && instr.args[2].typeOfAccess == NONE){
-                b = instr.args[1].value;
-                memory->writeData(instr.args[0].value,b);
-            }else if(instr.args[0].typeOfAccess == REGISTER && instr.args[1].typeOfAccess == DIRECT && instr.args[2].typeOfAccess == NONE){
-                b = instr.args[1].value;
-                registers[instr.args[0].value] = b;
 
-            }else {
-                ErrorOpExecution("MOV");
+            activeOperation = "MOV";
+            if(instr.args[2].typeOfAccess == NONE){
+                a = fetchOperands(instr,1);
+                writeData(instr,0,a);
+            } else {
+
+
+                ErrorOpExecution(activeOperation);
             }
             break;
 
         case CMP:
-            if(instr.args[0].typeOfAccess == REGISTER && instr.args[1].typeOfAccess == REGISTER && instr.args[2].typeOfAccess == NONE){
-                a = registers[instr.args[0].value];
-                b = registers[instr.args[1].value];
+            activeOperation = "CMP";
+            if(instr.args[2].typeOfAccess == NONE){
+                a = fetchOperands(instr,0);
+                b = fetchOperands(instr,1);
                 compareAndSetFlag(a,b);
-
-            }else if(instr.args[0].typeOfAccess == REGISTER && instr.args[1].typeOfAccess == MEMORY && instr.args[2].typeOfAccess == NONE){
-                a = registers[instr.args[0].value];
-                b = memory->readData(instr.args[1].value);
-                compareAndSetFlag(a,b);
-            }else if(instr.args[0].typeOfAccess == MEMORY && instr.args[1].typeOfAccess == REGISTER && instr.args[2].typeOfAccess == NONE){
-                a = memory->readData(instr.args[0].value);
-                b = registers[instr.args[1].value];
-                compareAndSetFlag(a,b);
-
-            }else if(instr.args[0].typeOfAccess == REGISTER && instr.args[1].typeOfAccess == DIRECT && instr.args[2].typeOfAccess == NONE){
-                a = registers[instr.args[0].value];
-                b = instr.args[1].value;
-                compareAndSetFlag(a,b);
-            }else
-                ErrorOpExecution("CMP");
+            }
+            else {
+                ErrorOpExecution(activeOperation);
+            }
             break;
         case JMP:
+            activeOperation = "JMP";
             if(instr.args[0].typeOfAccess == DIRECT && instr.args[1].typeOfAccess == NONE && instr.args[2].typeOfAccess == NONE){
-                a = instr.args[0].value;
+                a = fetchOperands(instr,0);
                 programCounter = a;
-            }else
-                ErrorOpExecution("JMP");
-            break;
-        case JZ:
-            if(instr.args[0].typeOfAccess == DIRECT && instr.args[1].typeOfAccess == NONE && instr.args[2].typeOfAccess == NONE){
-                a = instr.args[0].value;
-                if(flags[JZ])
-                    programCounter = a;
+            }else {
+                ErrorOpExecution(activeOperation);
             }
-            else
-              ErrorOpExecution("JZ");
             break;
-        case JL:
-            if(instr.args[0].typeOfAccess == DIRECT && instr.args[1].typeOfAccess == NONE && instr.args[2].typeOfAccess == NONE){
-                a = instr.args[0].value;
-                if(flags[JL])
-                    programCounter = a;
-            }else
-                ErrorOpExecution("JMP");
-            break;
-        case JG:
-            if(instr.args[0].typeOfAccess == DIRECT && instr.args[1].typeOfAccess == NONE && instr.args[2].typeOfAccess == NONE){
-                a = instr.args[0].value;
-                if(flags[JG])
-                    programCounter = a;
-            }else
-                ErrorOpExecution("JMP");
-            break;
-        case JE:
-            if(instr.args[0].typeOfAccess == DIRECT && instr.args[1].typeOfAccess == NONE && instr.args[2].typeOfAccess == NONE){
-                a = instr.args[0].value;
-                if(flags[JE])
-                    programCounter = a;
-            }else
-                ErrorOpExecution("JMP");
-            break;
-        case JGE:
-            if(instr.args[0].typeOfAccess == DIRECT && instr.args[1].typeOfAccess == NONE && instr.args[2].typeOfAccess == NONE){
-                a = instr.args[0].value;
-                if(flags[JGE])
-                    programCounter = a;
-            }else
-                ErrorOpExecution("JMP");
-            break;
-        case JLE:
-            if(instr.args[0].typeOfAccess == DIRECT && instr.args[1].typeOfAccess == NONE && instr.args[2].typeOfAccess == NONE){
-                a = instr.args[0].value;
-                if(flags[JLE])
-                    programCounter = a;
-            }else
-                ErrorOpExecution("JMP");
-            break;
-        case JD:
-            if(instr.args[0].typeOfAccess == DIRECT && instr.args[1].typeOfAccess == NONE && instr.args[2].typeOfAccess == NONE){
-                a = instr.args[0].value;
-                if(flags[JD])
-                    programCounter = a;
-            }else
-                ErrorOpExecution("JMP");
-            break;
+
         case PRINT:
+            activeOperation = "PRINT";
             if(instr.args[0].typeOfAccess == DIRECT && instr.args[1].typeOfAccess == NONE && instr.args[2].typeOfAccess == NONE){
                 int pos = instr.args[0].textArg.find("\\n");
                 if(pos != std::string::npos){
                     std::cout << instr.args[0].textArg.substr(0,pos) << std::endl;
                 }else
                     std::cout << instr.args[0].textArg;
-            }else
-                ErrorOpExecution("PRINT");
+            }else {
+                ErrorOpExecution(activeOperation);
+            }
             break;
         case PRINTV:
-            if(instr.args[0].typeOfAccess == REGISTER && instr.args[1].typeOfAccess == NONE && instr.args[2].typeOfAccess == NONE){
-                a = registers[instr.args[0].value];
+            activeOperation = "PRINTV";
+            if(instr.args[1].typeOfAccess == NONE && instr.args[2].typeOfAccess == NONE){
+                a = fetchOperands(instr,0);
                 std::cout << a << std::endl;
-            }else if(instr.args[0].typeOfAccess == MEMORY && instr.args[1].typeOfAccess == NONE && instr.args[2].typeOfAccess == NONE){
-                a = memory->readData(instr.args[0].value);
-                std::cout << a << std::endl;
-            }else if(instr.args[0].typeOfAccess == DIRECT && instr.args[1].typeOfAccess == NONE && instr.args[2].typeOfAccess == NONE){
-                a = instr.args[0].value;
-                std::cout << a << std::endl;
-            }else
-                ErrorOpExecution("PRINTV");
+            }
+            else {
+                ErrorOpExecution(activeOperation);
+            }
             break;
         case RET:
             if(instr.args[0].typeOfAccess == DIRECT && instr.args[1].typeOfAccess == NONE && instr.args[2].typeOfAccess == NONE){
-                a = instr.args[0].value;
+                a = fetchOperands(instr,0);
                 returnCode = a;
                 toReturn = true;
             }
+            break;
+        case READINT:
+            activeOperation = "READINT";
+            if(instr.args[0].typeOfAccess == REGISTER && instr.args[1].typeOfAccess == NONE && instr.args[2].typeOfAccess    == NONE){
+                std::cin >> a;
+                writeData(instr,0,a);
+            }
+            else{
+                ErrorOpExecution(activeOperation);
+            }
+            break;
 
+        case JZ:
+            activeOperation = "JZ";
+            flag = ZERO;
+        case JL:
+            activeOperation = "JL";
+            flag = LESSER;
+        case JG:
+            activeOperation = "JG";
+            flag = GREATER;
+        case JE:
+            activeOperation = "JE";
+            flag = EQUAL;
+        case JGE:
+            activeOperation = "JGE";
+            flag = GREATEQUAL;
+        case JLE:
+            activeOperation = "JLE";
+           flag = LESSEQUAL;
+        case JD:
+            activeOperation = "JD";
+           flag = DIFFERNT;
+        default:
+            if(instr.args[0].typeOfAccess == DIRECT && instr.args[1].typeOfAccess == NONE && instr.args[2].typeOfAccess == NONE){
+                a = fetchOperands(instr,0);
+                if(flags[flag])
+                    programCounter = a;
+            }else {
+                ErrorOpExecution(activeOperation);
+            }
             break;
 
     }
