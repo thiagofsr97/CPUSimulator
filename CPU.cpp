@@ -82,8 +82,6 @@ void CPU::decode() {
         op = DIV;
     else if(instr.operation == "MOV")
         op = MOV;
-    else if(instr.operation == "COPY")
-        op = COPY;
     else if(instr.operation == "CMP")
         op = CMP;
     else if(instr.operation == "JMP")

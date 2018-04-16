@@ -34,7 +34,6 @@ PRINT '\n'
 #Asking to the user if wants to run another calculation
 PRINT 'DO you wish to run another calculation ? (1 - YES/ 0 - NO)\n'
 PRINT '\n'
-PRINT '\n'
 READINT EAX
 CMP EAX,1
 JE 1
