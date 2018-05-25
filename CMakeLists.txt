@@ -1,7 +1,19 @@
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 3.10)
 project(CPUSimulator)
 
 set(CMAKE_CXX_STANDARD 11)
 
-set(SOURCE_FILES main.cpp Memory.cpp Memory.h Utils.h CPU.cpp CPU.h)
-add_executable(CPUSimulator ${SOURCE_FILES})
+include_directories(.)
+include_directories(Cache)
+
+add_executable(CPUSimulator
+        Cache/Cache.cpp
+        Cache/Cache.h
+        Cache/CacheData.cpp
+        Cache/CacheData.h
+        CPU.cpp
+        CPU.h
+        main.cpp
+        Memory.cpp
+        Memory.h
+        Utils.h)

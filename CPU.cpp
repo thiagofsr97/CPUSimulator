@@ -3,7 +3,7 @@
 //
 
 #include "CPU.h"
-
+#define CACHESIZE 5
 
 
 CPU::CPU(std::string instructionsPath, std::string dataPath) {
@@ -11,6 +11,7 @@ CPU::CPU(std::string instructionsPath, std::string dataPath) {
     cycles = 0;
     returnCode = 0;
     memory = new Memory(instructionsPath,dataPath);
+    cache = new Cache(CACHESIZE,memory);
 
 }
 
@@ -20,7 +21,8 @@ CPU::~CPU() {
 }
 
 void CPU::fetch() {
-    memory->readInstruction(programCounter,instr);
+    cache->read(&instr, nullptr,programCounter);
+    //memory->readInstruction(programCounter,instr);
     programCounter++;
     cycles++;
 
@@ -30,7 +32,9 @@ int CPU::fetchOperands(Instruction instr,int argIndex) {
     switch(instr.args[argIndex].typeOfAccess){
         case MEMORY:
             cycles++;
-            return memory->readData(instr.args[argIndex].value);
+            int value;
+            cache->read(nullptr,&value,instr.args[argIndex].value);
+            return value;
         case DIRECT:
             return instr.args[argIndex].value;
         case REGISTER:
@@ -325,6 +329,7 @@ int CPU::init() {
 
     }
     deactivate();
+
     return returnCode;
 }
 
@@ -354,6 +359,14 @@ int CPU::getCycles() {
 
 int CPU::getReturnCode() {
     return returnCode;
+}
+
+int CPU::getNumberOfHits() {
+    return cache->get_number_of_hits();
+}
+
+int CPU::getNumberOfMisses() {
+    return cache->get_number_of_misses();
 }
 
 

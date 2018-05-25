@@ -9,7 +9,7 @@
 #define ErrorOpExecution(op) std::cout << "Error in executing the operation "<< op << ", please check your code\n";exit(1);
 #define ErrorOpDecode(ops) std::cout << "The operation " << ops << " is not present in set of instructions from this cpu\n";exit(1);
 
-
+typedef enum {INSTR_DATA, VALUE_DATA,NO_DATA} data_type;
 
 enum compFlags {ZERO = 0,GREATER = 1, GREATEQUAL = 2,LESSER =3,LESSEQUAL = 4, EQUAL = 5,DIFFERNT = 6};
 typedef enum {ADD,SUB,MUL,DIV,MOV,CMP,JMP,JZ,JL,JG,JE,JGE,JLE,JD,PRINT,RET,READINT,PRINTV,CLS} Operation;
